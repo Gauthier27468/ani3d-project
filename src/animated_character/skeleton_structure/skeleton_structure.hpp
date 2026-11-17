@@ -2,22 +2,19 @@
 
 #include "cgp/cgp.hpp"
 
-
-struct skeleton_structure {
-
+struct skeleton_structure
+{
     // joint frame matrix expressed with respect to their parent
     cgp::numarray<cgp::mat4> joint_matrix_local;
     // joint frame matrix expressed in global coordinate system
     cgp::numarray<cgp::mat4> joint_matrix_global;
 
     // Name of a given joint
-    cgp::numarray<std::string> joint_name; 
+    cgp::numarray<std::string> joint_name;
 
     // Storage of the parent index of the joint hierarchy.
     //   index_of_parent = parent_index[current_index]
     cgp::numarray<int> parent_index;
-
-
 
     // Return the number of joints in this skeleton
     int size() const;

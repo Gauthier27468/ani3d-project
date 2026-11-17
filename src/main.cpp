@@ -1,5 +1,5 @@
 // CGP library
-#include "cgp/cgp.hpp" 
+#include "cgp/cgp.hpp"
 
 // Running application
 #include "application.hpp"
@@ -9,12 +9,11 @@
 
 int main(int, char* argv[])
 {
+    scene_structure scene;
+    application_structure app;
+    app.initialize(argv[0], &scene);
 
-	scene_structure scene;
-	application_structure app;
-	app.initialize(argv[0], &scene);
-	
-	app.start_loop();
+    app.start_loop();
 
-	return 0;
+    return 0;
 }

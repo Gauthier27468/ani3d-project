@@ -1,22 +1,24 @@
 #include "application.hpp"
-#include "scene.hpp"
 
 #include <stdexcept>
 
+#include "scene.hpp"
+
 #ifdef __EMSCRIPTEN__
-#include <emscripten/emscripten.h>
+#    include <emscripten/emscripten.h>
 #endif
 
 using namespace cgp;
 
-namespace {
+namespace
+{
 
 #ifdef __EMSCRIPTEN__
-void emscripten_main_loop(void* arg)
-{
-    // EMScripten trampoline expects a C callback; forward to member routine.
-    static_cast<application_structure*>(arg)->animation_loop();
-}
+    void emscripten_main_loop(void* arg)
+    {
+        // EMScripten trampoline expects a C callback; forward to member routine.
+        static_cast<application_structure*>(arg)->animation_loop();
+    }
 #endif
 
 } // namespace
@@ -60,11 +62,14 @@ void application_structure::start_loop()
 
 #ifndef __EMSCRIPTEN__
     double lasttime = glfwGetTime();
-    while (!glfwWindowShouldClose(scene().window.glfw_window)) {
+    while (!glfwWindowShouldClose(scene().window.glfw_window))
+    {
         animation_loop();
 
-        if (project::fps_limiting) {
-            while (glfwGetTime() < lasttime + 1.0 / project::fps_max) {
+        if (project::fps_limiting)
+        {
+            while (glfwGetTime() < lasttime + 1.0 / project::fps_max)
+            {
             }
             lasttime = glfwGetTime();
         }
@@ -90,10 +95,13 @@ void application_structure::initialize_window()
     if (project::initial_window_size_height < 1)
         window_height = project::initial_window_size_height * s.window.monitor_height();
 
-    s.window.create_window(window_width, window_height, "CGP Display", CGP_OPENGL_VERSION_MAJOR, CGP_OPENGL_VERSION_MINOR);
+    s.window.create_window(window_width, window_height, "CGP Display", CGP_OPENGL_VERSION_MAJOR,
+                           CGP_OPENGL_VERSION_MINOR);
 
     std::cout << "\nWindow (" << s.window.width << "px x " << s.window.height << "px) created" << std::endl;
-    std::cout << "Monitor: " << glfwGetMonitorName(s.window.monitor) << " - Resolution (" << s.window.screen_resolution_width << "x" << s.window.screen_resolution_height << ")\n" << std::endl;
+    std::cout << "Monitor: " << glfwGetMonitorName(s.window.monitor) << " - Resolution ("
+              << s.window.screen_resolution_width << "x" << s.window.screen_resolution_height << ")\n"
+              << std::endl;
 
     std::cout << "OpenGL Information:" << std::endl;
     std::cout << cgp::opengl_info_display() << std::endl;
@@ -109,14 +117,17 @@ void application_structure::initialize_default_shaders()
 {
     std::string default_path_shaders = project::path + "shaders/";
 
-    mesh_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl", default_path_shaders + "mesh/mesh.frag.glsl");
-    triangles_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl", default_path_shaders + "mesh/mesh.frag.glsl");
+    mesh_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl",
+                                       default_path_shaders + "mesh/mesh.frag.glsl");
+    triangles_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl",
+                                            default_path_shaders + "mesh/mesh.frag.glsl");
 
-    image_structure const white_image = image_structure{1, 1, image_color_type::rgba, {255, 255, 255, 255}};
+    image_structure const white_image = image_structure{ 1, 1, image_color_type::rgba, { 255, 255, 255, 255 } };
     mesh_drawable::default_texture.initialize_texture_2d_on_gpu(white_image);
     triangles_drawable::default_texture.initialize_texture_2d_on_gpu(white_image);
 
-    curve_drawable::default_shader.load(default_path_shaders + "single_color/single_color.vert.glsl", default_path_shaders + "single_color/single_color.frag.glsl");
+    curve_drawable::default_shader.load(default_path_shaders + "single_color/single_color.vert.glsl",
+                                        default_path_shaders + "single_color/single_color.frag.glsl");
 }
 
 void application_structure::setup_callbacks()
@@ -150,7 +161,8 @@ void application_structure::animation_loop()
     glEnable(GL_DEPTH_TEST);
 
     float const time_interval = fps_record_.update();
-    if (fps_record_.event) {
+    if (fps_record_.event)
+    {
         std::string const title = "CGP Display - " + str(fps_record_.fps) + " fps";
         glfwSetWindowTitle(s.window.glfw_window, title.c_str());
     }
@@ -186,11 +198,13 @@ void application_structure::display_gui_default()
         fps_txt += " [shift]";
 
     ImGui::Text("%s", fps_txt.c_str());
-    if (ImGui::CollapsingHeader("Window")) {
+    if (ImGui::CollapsingHeader("Window"))
+    {
         ImGui::Indent();
 #ifndef __EMSCRIPTEN__
         bool changed_screen_mode = ImGui::Checkbox("Full Screen", &s.window.is_full_screen);
-        if (changed_screen_mode) {
+        if (changed_screen_mode)
+        {
             if (s.window.is_full_screen)
                 s.window.set_full_screen();
             else
@@ -201,11 +215,13 @@ void application_structure::display_gui_default()
 
 #ifndef __EMSCRIPTEN__
         ImGui::Checkbox("FPS limiting", &project::fps_limiting);
-        if (project::fps_limiting) {
+        if (project::fps_limiting)
+        {
             ImGui::SliderFloat("FPS limit", &project::fps_max, 10, 250);
         }
 #endif
-        if (ImGui::Checkbox("vsync (screen sync)", &project::vsync)) {
+        if (ImGui::Checkbox("vsync (screen sync)", &project::vsync))
+        {
             project::vsync == true ? glfwSwapInterval(1) : glfwSwapInterval(0);
         }
 
@@ -217,9 +233,7 @@ void application_structure::display_gui_default()
         ImGui::Spacing();
         ImGui::Separator();
         ImGui::Spacing();
-
     }
-
 }
 
 void application_structure::cleanup()
@@ -243,7 +257,7 @@ void application_structure::on_mouse_move(double xpos, double ypos)
     auto& s = scene();
 
     ImGui_ImplGlfw_CursorPosCallback(s.window.glfw_window, xpos, ypos);
-    vec2 const pos_relative = s.window.convert_pixel_to_relative_coordinates({xpos, ypos});
+    vec2 const pos_relative = s.window.convert_pixel_to_relative_coordinates({ xpos, ypos });
     s.inputs.mouse.position.update(pos_relative);
 
     s.inputs.mouse.on_gui = ImGui::GetIO().WantCaptureMouse;
@@ -286,18 +300,21 @@ void application_structure::on_keyboard(int key, int scancode, int action, int m
     ImGui_ImplGlfw_KeyCallback(s.window.glfw_window, key, scancode, action, mods);
     bool imgui_capture_keyboard = ImGui::GetIO().WantCaptureKeyboard;
 
-    if (!imgui_capture_keyboard) {
+    if (!imgui_capture_keyboard)
+    {
         s.inputs.keyboard.update_from_glfw_key(key, action);
         s.keyboard_event();
 
-        if (key == GLFW_KEY_F && action == GLFW_PRESS && s.inputs.keyboard.shift) {
+        if (key == GLFW_KEY_F && action == GLFW_PRESS && s.inputs.keyboard.shift)
+        {
             s.window.is_full_screen = !s.window.is_full_screen;
             if (s.window.is_full_screen)
                 s.window.set_full_screen();
             else
                 s.window.set_windowed_screen();
         }
-        if (key == GLFW_KEY_V && action == GLFW_PRESS && s.inputs.keyboard.shift) {
+        if (key == GLFW_KEY_V && action == GLFW_PRESS && s.inputs.keyboard.shift)
+        {
             auto const camera_model = s.camera_control.camera_model;
             std::cout << "\nDebug camera (position = " << str(camera_model.position()) << "):\n" << std::endl;
             std::cout << "  Frame matrix:" << std::endl;
@@ -312,7 +329,8 @@ void application_structure::on_window_focus(int focused)
 {
     auto& s = scene();
 
-    if (focused) {
+    if (focused)
+    {
         glfwSetInputMode(s.window.glfw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }

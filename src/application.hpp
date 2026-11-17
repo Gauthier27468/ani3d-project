@@ -1,11 +1,13 @@
 #pragma once
 
-#include "cgp/cgp.hpp"
 #include <iostream>
+
+#include "cgp/cgp.hpp"
 
 struct scene_structure;
 
-class application_structure {
+class application_structure
+{
 public:
     application_structure() = default;
 
@@ -13,7 +15,6 @@ public:
     void initialize(const char* executable_path, scene_structure* scene);
     // Launch the rendering loop once initialization succeeds.
     void start_loop();
-
 
     // Window and rendering bootstrap helpers.
     void initialize_window();
@@ -45,10 +46,8 @@ public:
     static void window_focus_callback(GLFWwindow* window, int focused);
     static void char_callback(GLFWwindow* window, unsigned int codepoint);
 
-
     scene_structure& scene();
     scene_structure const& scene() const;
-
 
     scene_structure* scene_ptr = nullptr;
     cgp::timer_fps fps_record_;

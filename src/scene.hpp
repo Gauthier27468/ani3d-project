@@ -1,102 +1,95 @@
 #pragma once
 
-
-#include "cgp/cgp.hpp"
-#include "environment.hpp"
-
 #include "animated_character/animated_character.hpp"
+#include "cgp/cgp.hpp"
 #include "effects/effects.hpp"
 #include "effects/squash.hpp"
+#include "environment.hpp"
 #include "navigation/chase.hpp"
 #include "navigation/chase_debug.hpp"
 
-
 using cgp::mesh_drawable;
 
-
-struct gui_parameters {
-	bool display_frame = false;
-	bool display_wireframe = false;
-	bool display_surface = true;
-	bool display_house = true;
-	bool display_roof = false;
-	bool display_walls = true;
-	bool display_texture = true;
-	bool display_skeleton = false;
-	bool display_skeleton_joint_sphere = false;
-	bool display_skeleton_joint_frame = false;
-	bool display_skeleton_bone = true;
-	bool rotate_head_effect_active = false;
-	// Chase params
-	bool chase_active = true;
-	bool display_nav_grid = false;
-	bool display_nav_free = false;
-	bool display_paths = false;
+struct gui_parameters
+{
+    bool display_frame = false;
+    bool display_wireframe = false;
+    bool display_surface = true;
+    bool display_house = true;
+    bool display_roof = false;
+    bool display_walls = true;
+    bool display_texture = true;
+    bool display_skeleton = false;
+    bool display_skeleton_joint_sphere = false;
+    bool display_skeleton_joint_frame = false;
+    bool display_skeleton_bone = true;
+    bool rotate_head_effect_active = false;
+    // Chase params
+    bool chase_active = true;
+    bool display_nav_grid = false;
+    bool display_nav_free = false;
+    bool display_paths = false;
 };
 
-
 // The structure of the custom scene
-struct scene_structure : cgp::scene_inputs_generic {
-	
-	// ****************************** //
-	// Elements and shapes of the scene
-	// ****************************** //
-	camera_controller_orbit_euler camera_control;
-	camera_projection_perspective camera_projection;
-	window_structure window;
+struct scene_structure : cgp::scene_inputs_generic
+{
+    // ****************************** //
+    // Elements and shapes of the scene
+    // ****************************** //
+    camera_controller_orbit_euler camera_control;
+    camera_projection_perspective camera_projection;
+    window_structure window;
 
-	mesh_drawable global_frame;          // The standard global frame
-	environment_structure environment;   // Standard environment controler
-	input_devices inputs;                // Storage for inputs status (mouse, keyboard, window dimension)
-	gui_parameters gui;                  // Standard GUI element storage
-	
-	// ****************************** //
-	// Elements and shapes of the scene
-	// ****************************** //
+    mesh_drawable global_frame; // The standard global frame
+    environment_structure environment; // Standard environment controler
+    input_devices inputs; // Storage for inputs status (mouse, keyboard, window dimension)
+    gui_parameters gui; // Standard GUI element storage
 
-	std::map<std::string, character_structure> characters;
-	std::string current_active_character;
+    // ****************************** //
+    // Elements and shapes of the scene
+    // ****************************** //
 
+    std::map<std::string, character_structure> characters;
+    std::string current_active_character;
 
-	std::map<std::string, effect_transition_structure> effect_transition;	
-	effect_walking_structure effect_walk;
+    std::map<std::string, effect_transition_structure> effect_transition;
+    effect_walking_structure effect_walk;
 
+    mesh_drawable sphere_ik;
+    mesh_drawable ground;
+    std::vector<mesh_drawable> house; // One drawable per material of the house
+    std::vector<mesh_drawable> house_roof;
+    std::vector<mesh_drawable> house_walls;
 
-	mesh_drawable sphere_ik;
-	mesh_drawable ground;
-	std::vector<mesh_drawable> house; // One drawable per material of the house
-	std::vector<mesh_drawable> house_roof;
-	std::vector<mesh_drawable> house_walls;
+    // Split house meshes into two classes: collision & holes meshes
+    std::vector<cgp::vec3> holes;
+    std::vector<std::pair<cgp::vec3, cgp::vec3>> hole_boxes;
+    std::vector<cgp::mesh> house_collision_meshes;
 
-	// Split house meshes into two classes: collision & holes meshes
-	std::vector<cgp::vec3> holes;
-	std::vector<std::pair<cgp::vec3, cgp::vec3>> hole_boxes;
-	std::vector<cgp::mesh> house_collision_meshes;
+    // Occupation grid and debugging
+    nav_grid_structure nav_grid;
+    chase_structure chase;
+    chase_debug_structure chase_debug;
 
-	// Occupation grid and debugging
-	nav_grid_structure nav_grid;
-	chase_structure chase;
-	chase_debug_structure chase_debug;
+    squash_structure tom_squash;
 
-	squash_structure tom_squash;
+    bool first_person_view_active = false;
 
-	bool first_person_view_active = false;
+    effect_dizzy_stars_structure effect_stars;
 
-	effect_dizzy_stars_structure effect_stars;
+    // ****************************** //
+    // Functions
+    // ****************************** //
 
-	// ****************************** //
-	// Functions
-	// ****************************** //
+    void reset_camera_to_sofa(); // Orbit camera centered on the sofa
+    void initialize(); // Standard initialization to be called before the animation loop
+    void display_frame(); // The frame display to be called within the animation loop
+    void display_gui(); // The display of the GUI, also called within the animation loop
 
-	void reset_camera_to_sofa(); // Orbit camera centered on the sofa
-	void initialize();    // Standard initialization to be called before the animation loop
-	void display_frame(); // The frame display to be called within the animation loop
-	void display_gui();   // The display of the GUI, also called within the animation loop
-
-	void mouse_move_event();
-	void mouse_click_event();
-	void keyboard_event();
-	void idle_frame();
-	void update_first_person_camera(); // Camera placed at Tom's eyes
-
+    void mouse_move_event();
+    void mouse_click_event();
+    void keyboard_event();
+    void idle_frame();
+    void update_first_person_camera(); // Camera placed at Tom's eyes
 };
