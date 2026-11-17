@@ -15,12 +15,9 @@ struct rigged_mesh_structure
 
 struct animated_model_structure
 {
-    skeleton_structure
-        skeleton; // A skeleton that stores its structure/hierarchy, and the local and global joint frames
-    std::map<std::string, rigged_mesh_structure>
-        rigged_mesh; // an animated model may be linked to multiple rigged meshes
-    std::map<std::string, skeleton_animation_structure>
-        animation; // storage for all the possible animation of this skeleton
+    skeleton_structure skeleton; // A skeleton that stores its structure/hierarchy, and the local and global joint frames
+    std::map<std::string, rigged_mesh_structure> rigged_mesh; // an animated model may be linked to multiple rigged meshes
+    std::map<std::string, skeleton_animation_structure> animation; // storage for all the possible animation of this skeleton
 
     // Compute the joint position corresponding to the given animation_name at time t from the animation structure. Then
     // update the skeleton structure in filling the local joint matrix. Finally update the global matrices of the
@@ -33,6 +30,5 @@ struct animated_model_structure
     void skinning_lbs(std::string const& mesh_name);
 
     // Apply a tranlation, rotation, and scaling to all the skeleton structure (current skeleton and all animation)
-    void apply_transformation(cgp::vec3 const& translation,
-                              cgp::rotation_transform rotation = cgp::rotation_transform(), float scaling = 1.0f);
+    void apply_transformation(cgp::vec3 const& translation, cgp::rotation_transform rotation = cgp::rotation_transform(), float scaling = 1.0f);
 };

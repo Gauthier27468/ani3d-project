@@ -10,18 +10,14 @@ void animated_model_structure::skinning_lbs(std::string const& mesh_name)
     cgp::numarray<vec3> const& squash_offset = rigged_mesh[mesh_name].squash_offset;
 
     // Prepare the transformation matrix for all the joints that impact the current mesh
-    int N_impacting_joints = controller_skinning.inverse_bind_matrices
-                                 .size(); // only a subset of the skeleton joints may impact the current mesh
+    int N_impacting_joints = controller_skinning.inverse_bind_matrices.size(); // only a subset of the skeleton joints may impact the current mesh
     cgp::numarray<cgp::mat4> transformation_matrix;
     transformation_matrix.resize(N_impacting_joints);
     for (int k = 0; k < N_impacting_joints; ++k)
     {
-        mat4 const& inv_bind_pose =
-            controller_skinning.inverse_bind_matrices.at(k); // the inverse of the bind pose (precomputed)
-        int joint_index_in_skeleton = controller_skinning.rig_index_to_skeleton_index.at(
-            k); // need to find the corresponding index of this joint into the global skeleton
-        mat4 const& joint_current = skeleton.joint_matrix_global.at(
-            joint_index_in_skeleton); // retrieve the current joint pose in the global position
+        mat4 const& inv_bind_pose = controller_skinning.inverse_bind_matrices.at(k); // the inverse of the bind pose (precomputed)
+        int joint_index_in_skeleton = controller_skinning.rig_index_to_skeleton_index.at(k); // need to find the corresponding index of this joint into the global skeleton
+        mat4 const& joint_current = skeleton.joint_matrix_global.at(joint_index_in_skeleton); // retrieve the current joint pose in the global position
 
         transformation_matrix.at(k) = joint_current * inv_bind_pose;
     }

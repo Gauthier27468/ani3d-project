@@ -95,13 +95,10 @@ void application_structure::initialize_window()
     if (project::initial_window_size_height < 1)
         window_height = project::initial_window_size_height * s.window.monitor_height();
 
-    s.window.create_window(window_width, window_height, "CGP Display", CGP_OPENGL_VERSION_MAJOR,
-                           CGP_OPENGL_VERSION_MINOR);
+    s.window.create_window(window_width, window_height, "CGP Display", CGP_OPENGL_VERSION_MAJOR, CGP_OPENGL_VERSION_MINOR);
 
     std::cout << "\nWindow (" << s.window.width << "px x " << s.window.height << "px) created" << std::endl;
-    std::cout << "Monitor: " << glfwGetMonitorName(s.window.monitor) << " - Resolution ("
-              << s.window.screen_resolution_width << "x" << s.window.screen_resolution_height << ")\n"
-              << std::endl;
+    std::cout << "Monitor: " << glfwGetMonitorName(s.window.monitor) << " - Resolution (" << s.window.screen_resolution_width << "x" << s.window.screen_resolution_height << ")\n" << std::endl;
 
     std::cout << "OpenGL Information:" << std::endl;
     std::cout << cgp::opengl_info_display() << std::endl;
@@ -117,17 +114,14 @@ void application_structure::initialize_default_shaders()
 {
     std::string default_path_shaders = project::path + "shaders/";
 
-    mesh_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl",
-                                       default_path_shaders + "mesh/mesh.frag.glsl");
-    triangles_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl",
-                                            default_path_shaders + "mesh/mesh.frag.glsl");
+    mesh_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl", default_path_shaders + "mesh/mesh.frag.glsl");
+    triangles_drawable::default_shader.load(default_path_shaders + "mesh/mesh.vert.glsl", default_path_shaders + "mesh/mesh.frag.glsl");
 
     image_structure const white_image = image_structure{ 1, 1, image_color_type::rgba, { 255, 255, 255, 255 } };
     mesh_drawable::default_texture.initialize_texture_2d_on_gpu(white_image);
     triangles_drawable::default_texture.initialize_texture_2d_on_gpu(white_image);
 
-    curve_drawable::default_shader.load(default_path_shaders + "single_color/single_color.vert.glsl",
-                                        default_path_shaders + "single_color/single_color.frag.glsl");
+    curve_drawable::default_shader.load(default_path_shaders + "single_color/single_color.vert.glsl", default_path_shaders + "single_color/single_color.frag.glsl");
 }
 
 void application_structure::setup_callbacks()

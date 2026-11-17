@@ -114,5 +114,4 @@ void chase_update(chase_structure& chase, nav_grid_structure const& grid, float 
 void chase_force_jerry_to_hole(chase_structure& chase);
 
 // Write the agent positions into the skeletons
-void chase_apply(chase_structure& chase, nav_grid_structure const& grid, character_structure& tom,
-                 character_structure& jerry);
+void chase_apply(chase_structure& chase, nav_grid_structure const& grid, character_structure& tom, character_structure& jerry);

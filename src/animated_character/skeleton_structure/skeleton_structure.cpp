@@ -39,8 +39,7 @@ void skeleton_structure::update_joint_matrix_global_to_local()
 
     joint_matrix_local[0] = joint_matrix_global[0];
     for (int k = 1; k < N; ++k)
-        joint_matrix_local[k] =
-            joint_matrix_global[parent_index[k]].inverse_assuming_rigid_transform() * joint_matrix_global[k];
+        joint_matrix_local[k] = joint_matrix_global[parent_index[k]].inverse_assuming_rigid_transform() * joint_matrix_global[k];
 }
 std::string skeleton_structure::parent_name(int joint_index) const
 {

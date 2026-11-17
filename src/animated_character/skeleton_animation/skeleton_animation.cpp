@@ -2,8 +2,7 @@
 
 using namespace cgp;
 
-static bool find_relative_placement_in_array(numarray<float> const& times, float t, int& index_placement,
-                                             float& ratio_placement);
+static bool find_relative_placement_in_array(numarray<float> const& times, float t, int& index_placement, float& ratio_placement);
 
 mat4 skeleton_animation_structure::evaluate(int k_joint, float t) const
 {
@@ -44,8 +43,7 @@ void skeleton_animation_structure::update_time_max()
 //  Return
 //    index_placement: i such that t_i < t < t_{i+1}
 //    ratio_placement: the relative position of t between its two discrete key time r = (t-t_i) / (t_{i+1}-t_i)
-static bool find_relative_placement_in_array(numarray<float> const& times, float t, int& index_placement,
-                                             float& ratio_placement)
+static bool find_relative_placement_in_array(numarray<float> const& times, float t, int& index_placement, float& ratio_placement)
 {
     assert_cgp(times.size() >= 2, "time intervals should have more than 2 values");
 

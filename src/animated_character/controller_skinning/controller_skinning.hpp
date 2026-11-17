@@ -14,8 +14,7 @@ std::ostream& operator<<(std::ostream& s, skinning_weight_info const& weight_inf
 // Contain the information of the skinning weights, dependance, and inverse bind matrices
 struct controller_skinning_structure
 {
-    cgp::numarray<cgp::numarray<skinning_weight_info>>
-        vertex_to_joint_dependence; // vertex_to_joint_dependence[k_vertex][k_dependance]
+    cgp::numarray<cgp::numarray<skinning_weight_info>> vertex_to_joint_dependence; // vertex_to_joint_dependence[k_vertex][k_dependance]
     cgp::numarray<cgp::mat4> inverse_bind_matrices; // Inverse bind matrices corresponding to a given mesh
     cgp::numarray<int> rig_index_to_skeleton_index; // correspondance between the index of the local joint (for a given
                                                     // mesh), and the index in the global skeleton structure

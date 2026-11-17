@@ -2,8 +2,7 @@
 
 using namespace cgp;
 
-void character_structure::load_and_initialize(filename_loader_structure const& param_loader,
-                                              affine_rts const& transform)
+void character_structure::load_and_initialize(filename_loader_structure const& param_loader, affine_rts const& transform)
 {
     animated_model = mesh_skinning_loader(param_loader, transform);
     for (auto const& entry : animated_model.rigged_mesh)

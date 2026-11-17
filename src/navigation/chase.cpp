@@ -114,8 +114,7 @@ namespace
         set_path(c.tom, raw, nav_smooth_path(g, raw, false));
     }
 
-    void jerry_follow_path(chase_structure& c, nav_grid_structure const& g, nav_search_result const& from_jerry,
-                           int goal)
+    void jerry_follow_path(chase_structure& c, nav_grid_structure const& g, nav_search_result const& from_jerry, int goal)
     {
         std::vector<vec2> raw = nav_extract_path(g, from_jerry, goal);
         if (raw.empty())
@@ -368,8 +367,7 @@ namespace
         tom.moving = false;
 
         // Scripted sequence after Jerry entered the hole: fall, stand up, look around
-        if (c.phase == tom_phase::falling || c.phase == tom_phase::lying || c.phase == tom_phase::standing_up
-            || c.phase == tom_phase::looking)
+        if (c.phase == tom_phase::falling || c.phase == tom_phase::lying || c.phase == tom_phase::standing_up || c.phase == tom_phase::looking)
         {
             c.phase_timer += dt;
 
@@ -443,8 +441,7 @@ namespace
         agent_advance(tom, dt, speed_scale);
 
         // Arrived at the hole: face the wall and fall
-        if (c.phase == tom_phase::to_hole && c.hole_current >= 0 && tom.path_index >= tom.path.size()
-            && norm(tom.position - g.hole_exit[c.hole_current]) < 0.3f)
+        if (c.phase == tom_phase::to_hole && c.hole_current >= 0 && tom.path_index >= tom.path.size() && norm(tom.position - g.hole_exit[c.hole_current]) < 0.3f)
         {
             vec2 const dir = g.hole_center[c.hole_current] - tom.position;
 
@@ -459,8 +456,7 @@ namespace
 
     void place_character(character_structure& character, agent_structure const& a, float floor_y)
     {
-        effect_place_root(character.animated_model.skeleton, vec3(a.position.x, floor_y, a.position.y),
-                          a.angle + a.angle_offset);
+        effect_place_root(character.animated_model.skeleton, vec3(a.position.x, floor_y, a.position.y), a.angle + a.angle_offset);
     }
 
 } // namespace

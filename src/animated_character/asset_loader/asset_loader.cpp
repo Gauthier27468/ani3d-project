@@ -18,8 +18,7 @@ void filename_loader_structure::add_animation(std::string anim_name, std::string
     animation_loader.animation_matrix = animation_root_path + "skeleton_animation_matrix.txt";
 }
 
-void filename_loader_structure::add_rigged_mesh(std::string mesh_name, std::string rigged_mesh_root_path,
-                                                std::string texture)
+void filename_loader_structure::add_rigged_mesh(std::string mesh_name, std::string rigged_mesh_root_path, std::string texture)
 {
     filename_loader_rigged_mesh_structure& rigged_loader = loader_rigged_mesh[mesh_name];
 
@@ -28,8 +27,7 @@ void filename_loader_structure::add_rigged_mesh(std::string mesh_name, std::stri
     rigged_loader.controller_skinning_inverse_bind_matrix = rigged_mesh_root_path + "skinning_inverse_bind_matrix.txt";
     rigged_loader.controller_skinning_joint = rigged_mesh_root_path + "skinning_joint.txt";
     rigged_loader.controller_skinning_weight = rigged_mesh_root_path + "skinning_weight.txt";
-    rigged_loader.controller_skinning_rig_to_skeleton_joint_index =
-        rigged_mesh_root_path + "skinning_joint_rig_index_to_skeleton_index.txt";
+    rigged_loader.controller_skinning_rig_to_skeleton_joint_index = rigged_mesh_root_path + "skinning_joint_rig_index_to_skeleton_index.txt";
     rigged_loader.texture = texture;
 }
 
@@ -58,12 +56,10 @@ animated_model_structure mesh_skinning_loader(filename_loader_structure param, a
         rigged_mesh.mesh_bind_pose.fill_empty_field();
         rigged_mesh.mesh_deformed = rigged_mesh.mesh_bind_pose;
 
-        read_from_file(param_mesh.controller_skinning_inverse_bind_matrix,
-                       rigged_mesh.controller_skinning.inverse_bind_matrices);
+        read_from_file(param_mesh.controller_skinning_inverse_bind_matrix, rigged_mesh.controller_skinning.inverse_bind_matrices);
         for (int k = 0; k < rigged_mesh.controller_skinning.inverse_bind_matrices.size(); ++k)
         {
-            rigged_mesh.controller_skinning.inverse_bind_matrices[k] =
-                rigged_mesh.controller_skinning.inverse_bind_matrices[k] * inverse(T);
+            rigged_mesh.controller_skinning.inverse_bind_matrices[k] = rigged_mesh.controller_skinning.inverse_bind_matrices[k] * inverse(T);
             rigged_mesh.controller_skinning.inverse_bind_matrices[k].apply_scaling(transform.scaling);
         }
         cgp::numarray<cgp::numarray<int>> joint_index;
@@ -85,10 +81,8 @@ animated_model_structure mesh_skinning_loader(filename_loader_structure param, a
             }
         }
         rigged_mesh.controller_skinning.vertex_to_joint_dependence = vertex_to_joint_dependence;
-        read_from_file(param_mesh.controller_skinning_rig_to_skeleton_joint_index,
-                       rigged_mesh.controller_skinning.rig_index_to_skeleton_index);
-        read_from_file(param_mesh.controller_skinning_global_bind_matrix,
-                       rigged_mesh.controller_skinning.global_bind_matrix);
+        read_from_file(param_mesh.controller_skinning_rig_to_skeleton_joint_index, rigged_mesh.controller_skinning.rig_index_to_skeleton_index);
+        read_from_file(param_mesh.controller_skinning_global_bind_matrix, rigged_mesh.controller_skinning.global_bind_matrix);
     }
 
     read_from_file(param.loader_skeleton.skeleton_joint_name, animated_model.skeleton.joint_name);

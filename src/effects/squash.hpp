@@ -10,5 +10,4 @@ struct squash_structure
     float reinflate_speed = 1.0f;
 };
 
-void squash_compute_offset(squash_structure const& squash, cgp::numarray<cgp::vec3> const& bind_position,
-                           cgp::numarray<cgp::vec3>& offset);
+void squash_compute_offset(squash_structure const& squash, cgp::numarray<cgp::vec3> const& bind_position, cgp::numarray<cgp::vec3>& offset);

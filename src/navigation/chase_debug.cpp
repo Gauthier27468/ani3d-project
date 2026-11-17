@@ -6,8 +6,7 @@ namespace
 {
 
     // Build one flat colored quad per cell satisfying the predicate
-    void build_cells(debug_mesh_structure& out, nav_grid_structure const& g, std::function<bool(int)> const& pred,
-                     vec3 const& color, float y)
+    void build_cells(debug_mesh_structure& out, nav_grid_structure const& g, std::function<bool(int)> const& pred, vec3 const& color, float y)
     {
         mesh m;
         float const s = 0.45f * g.cell_size;
@@ -66,8 +65,7 @@ namespace
         dc.valid = true;
     }
 
-    void refresh_curves(debug_curve_structure& smooth, debug_curve_structure& raw, agent_structure const& a, float y,
-                        vec3 const& color_smooth, vec3 const& color_raw)
+    void refresh_curves(debug_curve_structure& smooth, debug_curve_structure& raw, agent_structure const& a, float y, vec3 const& color_smooth, vec3 const& color_raw)
     {
         if (smooth.version == a.path_version)
             return;
@@ -83,17 +81,14 @@ void chase_debug_initialize(chase_debug_structure& d, nav_grid_structure const& 
 {
     float const y = g.floor_y + 0.02f;
     build_cells(d.grid_blocked, g, [&](int c) { return g.blocked[c]; }, { 1.0f, 0.2f, 0.2f }, y);
-    build_cells(
-        d.grid_hole, g, [&](int c) { return !g.blocked[c] && g.hole_id[c] >= 0; }, { 0.2f, 0.4f, 1.0f }, y + 0.005f);
-    build_cells(
-        d.grid_free, g, [&](int c) { return !g.blocked[c] && g.hole_id[c] < 0; }, { 0.3f, 0.9f, 0.3f }, y - 0.005f);
+    build_cells(d.grid_hole, g, [&](int c) { return !g.blocked[c] && g.hole_id[c] >= 0; }, { 0.2f, 0.4f, 1.0f }, y + 0.005f);
+    build_cells(d.grid_free, g, [&](int c) { return !g.blocked[c] && g.hole_id[c] < 0; }, { 0.3f, 0.9f, 0.3f }, y - 0.005f);
 
     d.marker.initialize_data_on_gpu(mesh_primitive_sphere());
     d.marker.material.phong = { 1, 0, 0, 1 };
 }
 
-void chase_debug_draw(chase_debug_structure& d, chase_structure const& c, nav_grid_structure const& g,
-                      environment_generic_structure const& environment, bool show_grid, bool show_free_cells,
+void chase_debug_draw(chase_debug_structure& d, chase_structure const& c, nav_grid_structure const& g, environment_generic_structure const& environment, bool show_grid, bool show_free_cells,
                       bool show_paths)
 {
     if (show_grid)

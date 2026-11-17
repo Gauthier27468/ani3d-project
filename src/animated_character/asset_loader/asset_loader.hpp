@@ -39,8 +39,7 @@ struct filename_loader_structure
     void clear();
 };
 
-animated_model_structure mesh_skinning_loader(filename_loader_structure filename_parameter,
-                                              cgp::affine_rts const& transform = cgp::affine_rts());
+animated_model_structure mesh_skinning_loader(filename_loader_structure filename_parameter, cgp::affine_rts const& transform = cgp::affine_rts());
 
 // Map correspondance between skinning weights and vertices (that have been duplicated to load the texture coordinates)
 template <typename T>

@@ -40,9 +40,7 @@ namespace
     {
         float const t2 = t * t;
         float const t3 = t2 * t;
-        return 0.5f
-            * ((2.0f * p1) + (p2 - p0) * t + (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3) * t2
-               + (3.0f * p1 - p0 - 3.0f * p2 + p3) * t3);
+        return 0.5f * ((2.0f * p1) + (p2 - p0) * t + (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3) * t2 + (3.0f * p1 - p0 - 3.0f * p2 + p3) * t3);
     }
 
 } // namespace
@@ -97,8 +95,7 @@ int nav_nearest_free_cell(nav_grid_structure const& g, vec2 const& p, bool allow
     return -1;
 }
 
-void nav_grid_build(nav_grid_structure& g, std::vector<mesh> const& meshes,
-                    std::vector<std::pair<vec3, vec3>> const& hole_boxes, nav_build_parameters const& param)
+void nav_grid_build(nav_grid_structure& g, std::vector<mesh> const& meshes, std::vector<std::pair<vec3, vec3>> const& hole_boxes, nav_build_parameters const& param)
 {
     // === Bounding box of the whole house =====================================
     vec3 pmin = { 1e9f, 1e9f, 1e9f };
@@ -171,8 +168,7 @@ void nav_grid_build(nav_grid_structure& g, std::vector<mesh> const& meshes,
                         continue; // already blocked
 
                     vec2 const p = g.cell_center(idx);
-                    float const d = std::min({ dist_point_segment(p, a2, b2), dist_point_segment(p, b2, c2),
-                                               dist_point_segment(p, c2, a2) });
+                    float const d = std::min({ dist_point_segment(p, a2, b2), dist_point_segment(p, b2, c2), dist_point_segment(p, c2, a2) });
 
                     // Block if too close (margin threshold)
                     //  We do not want Tom and Jerry to run into walls with their model halfway inside.
@@ -280,8 +276,7 @@ void nav_grid_build(nav_grid_structure& g, std::vector<mesh> const& meshes,
     }
 }
 
-nav_search_result nav_search(nav_grid_structure const& g, int start, int goal, bool allow_holes,
-                             std::function<bool(int, float)> const& accept)
+nav_search_result nav_search(nav_grid_structure const& g, int start, int goal, bool allow_holes, std::function<bool(int, float)> const& accept)
 {
     int const N = g.nx * g.nz;
     nav_search_result res;

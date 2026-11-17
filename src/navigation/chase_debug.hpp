@@ -34,6 +34,5 @@ struct chase_debug_structure
 
 void chase_debug_initialize(chase_debug_structure& debug, nav_grid_structure const& grid);
 
-void chase_debug_draw(chase_debug_structure& debug, chase_structure const& chase, nav_grid_structure const& grid,
-                      cgp::environment_generic_structure const& environment, bool show_grid, bool show_free_cells,
-                      bool show_paths);
+void chase_debug_draw(chase_debug_structure& debug, chase_structure const& chase, nav_grid_structure const& grid, cgp::environment_generic_structure const& environment, bool show_grid,
+                      bool show_free_cells, bool show_paths);

@@ -12,8 +12,7 @@ int constexpr mixamo_head_index = 10;
 int constexpr tom_head_index = 15; // mixamorig_Head
 vec3 const tom_eye_offset = { 0.0f, 0.23f, 0.28f }; // trust
 
-void initialize_house(std::vector<mesh_drawable>& house, std::vector<mesh_drawable>& house_roof,
-                      std::vector<mesh_drawable>& house_walls, std::vector<vec3>& holes,
+void initialize_house(std::vector<mesh_drawable>& house, std::vector<mesh_drawable>& house_roof, std::vector<mesh_drawable>& house_walls, std::vector<vec3>& holes,
                       std::vector<std::pair<vec3, vec3>>& hole_boxes, std::vector<mesh>& collision_meshes);
 
 void scene_structure::reset_camera_to_sofa()
@@ -116,8 +115,7 @@ void scene_structure::display_frame()
         // Default animation reading a standard animation cycle
         if (transition.active == false)
         {
-            character.animated_model.set_skeleton_from_animation(character.current_animation_name,
-                                                                 character.timer.t_periodic);
+            character.animated_model.set_skeleton_from_animation(character.current_animation_name, character.timer.t_periodic);
         }
         // Currently with an active transition between two animations
         else
@@ -159,8 +157,7 @@ void scene_structure::display_frame()
     // Apply the walk effect if activated
     if (effect_walk.active)
     {
-        effect_walking(effect_walk, characters[current_active_character], inputs,
-                       effect_transition[current_active_character]);
+        effect_walking(effect_walk, characters[current_active_character], inputs, effect_transition[current_active_character]);
     }
 
     // Apply the head rotation effect if activated
@@ -168,8 +165,7 @@ void scene_structure::display_frame()
     {
         for (auto& entry_character : characters)
         {
-            effect_rotate_head_toward_objective_position(entry_character.second.animated_model.skeleton,
-                                                         mixamo_head_index, camera_control.camera_model.position());
+            effect_rotate_head_toward_objective_position(entry_character.second.animated_model.skeleton, mixamo_head_index, camera_control.camera_model.position());
         }
     }
 
@@ -287,15 +283,11 @@ void scene_structure::display_frame()
     if (gui.chase_active && chase.phase == tom_phase::lying)
     {
         // Stars grow at the start of the phase and shrink at the end
-        float const appear =
-            std::clamp(std::min(chase.phase_timer, chase.param.lying_duration - chase.phase_timer) / effect_stars.fade,
-                       0.0f, 1.0f);
-        effect_dizzy_stars_draw(effect_stars, characters["Tom"].animated_model.skeleton, mixamo_head_index, chase.time,
-                                appear, environment);
+        float const appear = std::clamp(std::min(chase.phase_timer, chase.param.lying_duration - chase.phase_timer) / effect_stars.fade, 0.0f, 1.0f);
+        effect_dizzy_stars_draw(effect_stars, characters["Tom"].animated_model.skeleton, mixamo_head_index, chase.time, appear, environment);
     }
 
-    chase_debug_draw(chase_debug, chase, nav_grid, environment, gui.display_nav_grid, gui.display_nav_free,
-                     gui.display_paths && gui.chase_active);
+    chase_debug_draw(chase_debug, chase, nav_grid, environment, gui.display_nav_grid, gui.display_nav_free, gui.display_paths && gui.chase_active);
 
     if (first_person_view_active)
         update_first_person_camera();
@@ -407,8 +399,7 @@ void scene_structure::display_gui()
         auto& character = entry.second;
 
         // Name of the character - special color for the active one
-        ImVec4 current_color =
-            name == current_active_character ? ImVec4(1.0f, 0.0f, 0.0f, 0.5f) : ImVec4(0.5f, 0.5f, 1.0f, 0.3f);
+        ImVec4 current_color = name == current_active_character ? ImVec4(1.0f, 0.0f, 0.0f, 0.5f) : ImVec4(0.5f, 0.5f, 1.0f, 0.3f);
         ImGui::PushStyleColor(ImGuiCol_Button, current_color);
         if (ImGui::Button(name.c_str()))
         {
@@ -438,8 +429,7 @@ void scene_structure::display_gui()
             std::string animation_name_button_txt = animation_name + "##" + name;
 
             bool is_active_animation = animation_name == character.current_animation_name;
-            ImVec4 current_color =
-                is_active_animation ? ImVec4(1.0f, 0.0f, 0.0f, 0.5f) : ImVec4(0.5f, 0.5f, 1.0f, 0.3f);
+            ImVec4 current_color = is_active_animation ? ImVec4(1.0f, 0.0f, 0.0f, 0.5f) : ImVec4(0.5f, 0.5f, 1.0f, 0.3f);
             ImGui::PushStyleColor(ImGuiCol_Button, current_color);
             bool click_anim = ImGui::Button(animation_name_button_txt.c_str());
             ImGui::SameLine();
@@ -451,8 +441,7 @@ void scene_structure::display_gui()
             {
                 if (effect_transition[name].active)
                 {
-                    std::cout << "Character " << name << " did not finish his previous transition " << animation_name
-                              << std::endl;
+                    std::cout << "Character " << name << " did not finish his previous transition " << animation_name << std::endl;
                 }
                 effect_transition_start(effect_transition[name], character, animation_name);
             }
@@ -477,8 +466,7 @@ void scene_structure::keyboard_event()
 
     if (effect_walk.active)
     {
-        effect_walking_keyboard_event(effect_transition[current_active_character], characters[current_active_character],
-                                      inputs, effect_walk);
+        effect_walking_keyboard_event(effect_transition[current_active_character], characters[current_active_character], inputs, effect_walk);
     }
 }
 void scene_structure::idle_frame()
@@ -486,8 +474,7 @@ void scene_structure::idle_frame()
     camera_control.idle_frame();
 }
 
-void initialize_house(std::vector<mesh_drawable>& house, std::vector<mesh_drawable>& house_roof,
-                      std::vector<mesh_drawable>& house_walls, std::vector<vec3>& holes,
+void initialize_house(std::vector<mesh_drawable>& house, std::vector<mesh_drawable>& house_roof, std::vector<mesh_drawable>& house_walls, std::vector<vec3>& holes,
                       std::vector<std::pair<vec3, vec3>>& hole_boxes, std::vector<mesh>& collision_meshes)
 {
     auto elements = mesh_load_file_obj_advanced(project::path + "assets/house/", "house.obj");

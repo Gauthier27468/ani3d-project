@@ -10,8 +10,6 @@ void squash_compute_offset(squash_structure const& squash, numarray<vec3> const&
 
     offset.resize(bind_position.size());
     for (int k = 0; k < bind_position.size(); ++k)
-        offset[k] =
-            vec3(0, 0,
-                 squash.flatness * squash.amount
-                     * (front - bind_position[k].z)); // moves the vertex to the front (flattenisation of the character)
+        offset[k] = vec3(0, 0,
+                         squash.flatness * squash.amount * (front - bind_position[k].z)); // moves the vertex to the front (flattenisation of the character)
 }

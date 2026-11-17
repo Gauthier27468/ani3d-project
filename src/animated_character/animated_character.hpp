@@ -31,6 +31,5 @@ struct character_structure
     void set_current_animation(std::string const& animation_name);
 
     // Load a new character structure from files using the dedicated loader
-    void load_and_initialize(filename_loader_structure const& param_loader,
-                             cgp::affine_rts const& transform = cgp::affine_rts());
+    void load_and_initialize(filename_loader_structure const& param_loader, cgp::affine_rts const& transform = cgp::affine_rts());
 };

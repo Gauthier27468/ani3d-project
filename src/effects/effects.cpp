@@ -3,21 +3,18 @@
 using namespace cgp;
 
 // Update a transition_structure before starting a new transition
-void effect_transition_start(effect_transition_structure& effect_transition, character_structure& character,
-                             std::string const& destination_anim)
+void effect_transition_start(effect_transition_structure& effect_transition, character_structure& character, std::string const& destination_anim)
 {
     effect_transition.source_anim = character.current_animation_name;
     effect_transition.timer_source_anim = character.timer;
 
     effect_transition.destination_anim = destination_anim;
-    effect_transition.timer_destination_anim.event_period =
-        character.animated_model.animation.at(destination_anim).time_max;
+    effect_transition.timer_destination_anim.event_period = character.animated_model.animation.at(destination_anim).time_max;
     effect_transition.timer_destination_anim.t_periodic = 0;
     effect_transition.timer_destination_anim.start();
 
     effect_transition.timer_completion.t = 0;
-    effect_transition.timer_completion.scale =
-        1.0f / effect_transition.transition_time; // force the timer to go from 0 to 1 during the transition_time
+    effect_transition.timer_completion.scale = 1.0f / effect_transition.transition_time; // force the timer to go from 0 to 1 during the transition_time
     effect_transition.timer_completion.start();
     effect_transition.active = true;
 
@@ -74,8 +71,7 @@ void effect_transition_compute(effect_transition_structure& effect_transition, c
 }
 
 // This function implements the change of animation when we press or release the UP key during a walk effect
-void effect_walking_keyboard_event(effect_transition_structure& effect_transition, character_structure& character,
-                                   cgp::input_devices const& inputs, effect_walking_structure const& effect_walking)
+void effect_walking_keyboard_event(effect_transition_structure& effect_transition, character_structure& character, cgp::input_devices const& inputs, effect_walking_structure const& effect_walking)
 {
     // If we just press the key up (or W), start the Walk cycle animation
     if (inputs.keyboard.last_action.is_pressed(GLFW_KEY_UP) || inputs.keyboard.last_action.is_pressed(GLFW_KEY_W))
@@ -91,8 +87,7 @@ void effect_walking_keyboard_event(effect_transition_structure& effect_transitio
 
 // This function implements the change of position of the character when a directional key is pressed
 // This function is called at every frame when the walk effect is active
-void effect_walking(effect_walking_structure& effect_walking, character_structure& character,
-                    cgp::input_devices const& inputs, effect_transition_structure const& effect_transition)
+void effect_walking(effect_walking_structure& effect_walking, character_structure& character, cgp::input_devices const& inputs, effect_transition_structure const& effect_transition)
 {
     float const dt = inputs.time_interval;
     float const speed = 4.0f;
@@ -135,8 +130,7 @@ void effect_place_root(skeleton_structure& skeleton, vec3 const& position, float
 }
 
 // Rotate the joint of the head to look toward the given objective position (if possible)
-void effect_rotate_head_toward_objective_position(skeleton_structure& skeleton, int joint_head_index,
-                                                  vec3 const& objective_position)
+void effect_rotate_head_toward_objective_position(skeleton_structure& skeleton, int joint_head_index, vec3 const& objective_position)
 {
     mat4 const& G = skeleton.joint_matrix_global[joint_head_index];
     vec3 const to_target = objective_position - G.get_block_translation(); // vector direction to the target
@@ -169,9 +163,7 @@ void effect_dizzy_stars_initialize(effect_dizzy_stars_structure& effect, std::st
     effect.star = mesh_obj_advanced_loader::convert_to_mesh_drawable(elements);
 }
 
-void effect_dizzy_stars_draw(effect_dizzy_stars_structure& effect, skeleton_structure const& skeleton,
-                             int joint_head_index, float time, float appear,
-                             environment_generic_structure const& environment)
+void effect_dizzy_stars_draw(effect_dizzy_stars_structure& effect, skeleton_structure const& skeleton, int joint_head_index, float time, float appear, environment_generic_structure const& environment)
 {
     vec3 const head = skeleton.joint_matrix_global[joint_head_index].get_block_translation();
 
@@ -179,9 +171,7 @@ void effect_dizzy_stars_draw(effect_dizzy_stars_structure& effect, skeleton_stru
     {
         // Stars are evenly spread on a circle that rotates around the head
         float const angle = effect.orbit_speed * time + 2.0f * Pi * k / effect.star_count;
-        vec3 const position = head
-            + vec3(effect.radius * std::cos(angle), effect.height + 0.03f * std::sin(3.0f * time + k),
-                   effect.radius * std::sin(angle));
+        vec3 const position = head + vec3(effect.radius * std::cos(angle), effect.height + 0.03f * std::sin(3.0f * time + k), effect.radius * std::sin(angle));
 
         // Draw all the stars
         for (auto& part : effect.star)
